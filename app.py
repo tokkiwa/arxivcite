@@ -44,7 +44,10 @@ def generate_citations(details):
     return citations
 
 app = Flask(__name__)
-
+# トップページ用のルートを追加
+@app.route('/')
+def index():
+    return render_template('index.html')
 @app.route('/pdf/<paper_id>')
 @app.route('/abs/<paper_id>')
 def show_citation(paper_id):

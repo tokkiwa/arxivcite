@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>arxivcite - Easy Citation from arXiv</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; text-align: center; }
+        h1 { font-size: 2.5em; }
+        p { font-size: 1.1em; color: #333; }
+        .usage { background-color: #f4f4f4; padding: 1.5em; border-radius: 8px; margin: 2em 0; text-align: left; }
+        .usage code { background-color: #e2e2e2; padding: 3px 6px; border-radius: 4px; }
+        .arrow { font-size: 1.5em; margin: 0 1em; }
+        .input-area { margin-top: 2em; }
+        .input-area input { font-size: 1em; padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 4px; }
+        .input-area button { font-size: 1em; padding: 10px 20px; border: none; background-color: #333; color: #fff; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to arxivcite</h1>
+    <p>arxivcite is a simple tool to generate citations for arXiv papers in various formats.</p>
+    <div class="usage">
+        <h2>How to Use</h2>
+        <p>Change "arxiv.org/pdf/..." to "arxiv<font color="red">cite</font>.org/pdf/..." to access arxivcite.</p>
+        <p>For example, if you want to cite:</p>
+        <p><code>https://arxiv.org/abs/2411.13033</code></p>
+        <p>then access:</p>
+        <p><code>https://arxiv<font color="red">cite</font>.org/abs/2411.13033
+        
+    </div>
+
+    <div class="input-area">
+        <h3>Paste Paper ID/URL Here</h3>
+        <input type="text" id="paperInput" placeholder="1706.03762 or https://arxiv.org/pdf/...">
+        <button onclick="goToCitation()">生成</button>
+    </div>
+
+    <script>
+        function goToCitation() {
+            let input = document.getElementById('paperInput').value.trim();
+            if (!input) {
+                alert('論文IDまたはURLを入力してください。');
+                return;
+            }
+            // URLからID部分だけを抽出する
+            // 例: "https://arxiv.org/pdf/1706.03762.pdf" -> "1706.03762"
+            const paperId = input.split('/').pop().replace('.pdf', '');
+            
+            // 引用ページへリダイレクト
+            window.location.href = `/pdf/${paperId}`;
+        }
+        
+    </script>
+</body>
+    <footer style="font-size: 0.85em; color: #888; text-align: center; margin-top: 40px;">
+        Made by <a href="https://github.com/tokkiwa" target="_blank" rel="noopener noreferrer">tokkiwa</a>. 
+        Contribute to arxivcite in <a href="https://github.com/tokkiwa/arxivcite" target="_blank" rel="noopener noreferrer">GitHub!</a>
+    </footer>
+</html>
