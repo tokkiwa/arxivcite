@@ -13,14 +13,23 @@
 <body>
     <h1>{{ paper.title }}</h1>
     <p><strong>Authors:</strong> {{ paper.authors | join(', ') }}</p>
-    <p><a href="{{ paper.url }}" target="_blank" rel="noopener noreferrer">元のPDFを開く</a></p>
+    <p><a href="{{ paper.url }}" target="_blank" rel="noopener noreferrer">Open Original PDF</a></p>
     <hr>
 
     {% for format, text in citations.items() %}
+    {% if format != 'pubmed' %}
     <h2>{{ format | upper }}</h2>
-    <pre id="{{ format }}-text">{{ text }}
-        <button class="copy-btn" onclick="copyToClipboard('{{ format }}-text')">📋 Copy</button>
-    </pre>
+    <div style="position:relative;">
+        <pre id="{{ format }}-text">{{ text }}</pre>
+        <button class="copy-btn" style="top:10px; right:10px; position:absolute;" onclick="copyToClipboard('{{ format }}-text')">📋 Copy</button>
+    </div>
+    {% if format == 'ieee' %}
+    <div style="font-size:0.85em; color:#888; margin-bottom:1em;">
+        the format is following IEEE's reference guide
+        (<a href="https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf" target="_blank" rel="noopener noreferrer">link</a>)
+    </div>
+    {% endif %}
+    {% endif %}
     {% endfor %}
 
     <script>
@@ -37,5 +46,9 @@
             });
         }
     </script>
+    <footer style="font-size: 0.85em; color: #888; text-align: center; margin-top: 40px;">
+        Made by <a href="https://github.com/tokkiwa" target="_blank" rel="noopener noreferrer">tokkiwa</a>. 
+        Contribute to arxivcite in <a href="https://github.com/tokkiwa/arxivcite" target="_blank" rel="noopener noreferrer">GitHub!</a>
+    </footer>
 </body>
 </html>

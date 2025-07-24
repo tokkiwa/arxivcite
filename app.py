@@ -32,14 +32,27 @@ def generate_citations(details):
         f"  url     = {{{details['url']}}}\n"
         f"}}"
     )
-    first_author_etal = f"{details['authors'][0]} et al."
+    def format_author(name):
+        parts = name.split()
+        if len(parts) == 1:
+            return parts[0]
+        initials = ''.join([p[0] + '.' for p in parts[:-1]])
+        return f"{initials} {parts[-1]}"
+    # IEEE形式
+    ieee_authors = ', '.join([format_author(a) for a in details['authors'][:-1]])
+    if len(details['authors']) > 1:
+        ieee_authors += f", and {format_author(details['authors'][-1])}"
     citations['ieee'] = (
-        f"{first_author_etal}, \"{details['title']},\" arXiv preprint arXiv:{details['id']}, {details['year']}. "
-        f"[Online]. Available: {details['url']}"
+        f"{ieee_authors}, \"{details['title']},\" {details['year']}, arXiv:{details['id']}."
     )
-    authors_pubmed = ', '.join(details['authors'])
-    citations['pubmed'] = (
-        f"{authors_pubmed}. {details['title']}. arXiv; {details['year']}. Available from: {details['url']}"
+    # APA形式
+    apa_authors = ', '.join([format_author(a) for a in details['authors'][:-1]])
+    if len(details['authors']) > 1:
+        apa_authors += f", & {format_author(details['authors'][-1])}"
+    else:
+        apa_authors = format_author(details['authors'][0])
+    citations['apa'] = (
+        f"{apa_authors} ({details['year']}). {details['title']}. arXiv:{details['id']}. {details['url']}"
     )
     return citations
 
