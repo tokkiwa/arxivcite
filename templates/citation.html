@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Citation for {{ paper.title }}</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        pre { background-color: #f4f4f4; padding: 1em; border-radius: 5px; white-space: pre-wrap; position: relative; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 5px 8px; border-radius: 3px;}
+        .copy-btn:hover { background: #eee; }
+    </style>
+</head>
+<body>
+    <h1>{{ paper.title }}</h1>
+    <p><strong>Authors:</strong> {{ paper.authors | join(', ') }}</p>
+    <p><a href="{{ paper.url }}" target="_blank" rel="noopener noreferrer">元のPDFを開く</a></p>
+    <hr>
+
+    {% for format, text in citations.items() %}
+    <h2>{{ format | upper }}</h2>
+    <pre id="{{ format }}-text">{{ text }}
+        <button class="copy-btn" onclick="copyToClipboard('{{ format }}-text')">📋 Copy</button>
+    </pre>
+    {% endfor %}
+
+    <script>
+        function copyToClipboard(elementId) {
+            const preElement = document.getElementById(elementId);
+            const text = preElement.childNodes[0].nodeValue.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                const button = preElement.querySelector('.copy-btn');
+                button.textContent = 'Copied!';
+                setTimeout(() => { button.textContent = '📋 Copy'; }, 2000);
+            }, (err) => {
+                console.error('Copy failed', err);
+                alert('Failed to copy text.');
+            });
+        }
+    </script>
+</body>
+</html>
