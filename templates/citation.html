@@ -8,12 +8,39 @@
         pre { background-color: #f4f4f4; padding: 1em; border-radius: 5px; white-space: pre-wrap; position: relative; }
         .copy-btn { position: absolute; top: 10px; right: 10px; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 5px 8px; border-radius: 3px;}
         .copy-btn:hover { background: #eee; }
+        /* ボタン風のスタイルを追加 */
+        .scholar-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4285F4; /* Googleのブランドカラー */
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px #999;
+        }
+        .scholar-btn:hover { background-color: #357ae8 }
+        .scholar-btn:active {
+            background-color: #357ae8;
+            box-shadow: 0 1px #666;
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
     <h1>{{ paper.title }}</h1>
     <p><strong>Authors:</strong> {{ paper.authors | join(', ') }}</p>
     <p><a href="{{ paper.url }}" target="_blank" rel="noopener noreferrer">Open Original PDF</a></p>
+    <hr>
+
+    <h2>Check on Google Scholar</h2>
+    <a href="{{ google_scholar_url }}" target="_blank" rel="noopener noreferrer" class="scholar-btn">
+        Search on Google Scholar
+    </a>
     <hr>
 
     {% for format, text in citations.items() %}
@@ -45,6 +72,7 @@
                 alert('Failed to copy text.');
             });
         }
+        // toggleScholarSearch関数は不要になったため削除
     </script>
     <footer style="font-size: 0.85em; color: #888; text-align: center; margin-top: 40px;">
         Made by <a href="https://github.com/tokkiwa" target="_blank" rel="noopener noreferrer">tokkiwa</a>. 

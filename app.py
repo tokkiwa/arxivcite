@@ -1,5 +1,8 @@
 from flask import Flask, render_template
 import arxiv
+from urllib.parse import quote_plus
+
+app = Flask(__name__)
 
 def get_paper_details(paper_id):
     """論文IDを使ってarXiv APIから論文情報を取得する"""
@@ -56,19 +59,23 @@ def generate_citations(details):
     )
     return citations
 
-app = Flask(__name__)
-# トップページ用のルートを追加
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/pdf/<paper_id>')
 @app.route('/abs/<paper_id>')
 def show_citation(paper_id):
     details = get_paper_details(paper_id)
     if not details:
         return "Paper not found.", 404
+    
     citations = generate_citations(details)
-    return render_template('citation.html', paper=details, citations=citations)
+    
+    # Google ScholarのURLを生成
+    google_scholar_url = f"https://scholar.google.com/scholar?q={quote_plus(details['title'])}"
+    
+    return render_template('citation.html', paper=details, citations=citations, google_scholar_url=google_scholar_url)
 
 if __name__ == '__main__':
     # 開発用サーバーを起動
